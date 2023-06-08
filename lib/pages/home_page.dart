@@ -1,7 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_final_fields
+// ignore_for_file: library_private_types_in_public_api, prefer_final_fields, avoid_print
 
+import 'dart:math';
+
+import 'package:bmi/components/alert_dialog.dart';
+import 'package:bmi/components/culculate_btn.dart';
 import 'package:bmi/components/gender_widget.dart';
+import 'package:bmi/components/slider_widget.dart';
 import 'package:bmi/components/status_card.dart';
+import 'package:bmi/components/weight_and_age.dart';
 import 'package:bmi/utils/app_colors.dart';
 import 'package:bmi/utils/app_text.dart';
 import 'package:flutter/material.dart';
@@ -14,8 +20,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double _currentSliderValue = 180;
+  double height = 180;
   bool isFemale = false;
+  int weight = 60;
+  int age = 28;
 
   @override
   Widget build(BuildContext context) {
@@ -34,167 +42,80 @@ class _HomePageState extends State<HomePage> {
             Expanded(
               child: Row(
                 children: [
-                  const StatusCard(
-                    widget: GenderWidget(
-                      icon: Icons.male,
-                      text: AppText.male,
-                      isFemale: false,
+                  StatusCard(
+                    widget: InkWell(
+                      onTap: () {
+                        setState(() {
+                          isFemale = false;
+                        });
+                      },
+                      child: GenderWidget(
+                        icon: Icons.male,
+                        text: AppText.male,
+                        isFemale: !isFemale,
+                      ),
                     ),
                   ),
                   StatusCard(
-                    widget: GenderWidget(
-                      icon: Icons.female,
-                      text: AppText.female,
-                      isFemale: !isFemale,
+                    widget: InkWell(
+                      onTap: () {
+                        setState(() {
+                          isFemale = !isFemale;
+                        });
+                      },
+                      child: GenderWidget(
+                        icon: Icons.female,
+                        text: AppText.female,
+                        isFemale: isFemale,
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
             StatusCard(
-              widget: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    AppText.height,
-                    style: TextStyle(
-                      color: AppColors.textColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: const [
-                      Text(
-                        '180',
-                        style: TextStyle(
-                          color: AppColors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.only(bottom: 6),
-                        child: Text(
-                          AppText.cm,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w800,
-                            color: AppColors.textColor,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  Slider(
-                    value: _currentSliderValue,
-                    max: 300,
-                    onChanged: (double value) {
-                      setState(() {
-                        _currentSliderValue = value;
-                      });
-                    },
-                    activeColor: AppColors.white,
-                    thumbColor: AppColors.redColor,
-                  ),
-                ],
+              widget: SliderWidget(
+                currentSliderValue: height,
+                onChanged: (double value) {
+                  setState(() {
+                    height = value;
+                  });
+                },
               ),
             ),
             Expanded(
               child: Row(
                 children: [
                   StatusCard(
-                    widget: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          AppText.weight,
-                          style: TextStyle(
-                            color: AppColors.textColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const Text(
-                          '60',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            FloatingActionButton(
-                              backgroundColor: AppColors.btnColor,
-                              foregroundColor: AppColors.white,
-                              onPressed: () {},
-                              child: const Icon(
-                                Icons.remove,
-                                size: 30,
-                              ),
-                            ),
-                            FloatingActionButton(
-                              backgroundColor: AppColors.btnColor,
-                              foregroundColor: AppColors.white,
-                              onPressed: () {},
-                              child: const Icon(
-                                Icons.add,
-                                size: 30,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    widget: WeightAndAge(
+                      text: AppText.weight,
+                      value: weight,
+                      remove: (maani) {
+                        setState(() {
+                          weight = maani;
+                        });
+                      },
+                      add: (maani) {
+                        setState(() {
+                          weight = maani;
+                        });
+                      },
                     ),
                   ),
                   StatusCard(
-                    widget: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          AppText.age,
-                          style: TextStyle(
-                            color: AppColors.textColor,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        const Text(
-                          '28',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.w800,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            FloatingActionButton(
-                              backgroundColor: AppColors.btnColor,
-                              foregroundColor: AppColors.white,
-                              onPressed: () {},
-                              child: const Icon(
-                                Icons.remove,
-                                size: 30,
-                              ),
-                            ),
-                            FloatingActionButton(
-                              backgroundColor: AppColors.btnColor,
-                              foregroundColor: AppColors.white,
-                              onPressed: () {},
-                              child: const Icon(
-                                Icons.add,
-                                size: 30,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                    widget: WeightAndAge(
+                      text: AppText.age,
+                      value: age,
+                      remove: (maani) {
+                        setState(() {
+                          age = maani;
+                        });
+                      },
+                      add: (maani) {
+                        setState(() {
+                          age = maani;
+                        });
+                      },
                     ),
                   ),
                 ],
@@ -203,23 +124,36 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: InkWell(
-        onTap: () {},
-        child: Container(
-          width: double.infinity,
-          height: 73,
-          color: AppColors.redColor,
-          child: const Center(
-            child: Text(
-              AppText.calculator,
-              style: TextStyle(
-                color: AppColors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-        ),
+      bottomNavigationBar: CulculateBtn(
+        onTap: () {
+          final result = weight / pow(height / 100, 2);
+
+          if (result < 18.5) {
+            showMyDialog(
+              context: context,
+              result: result,
+              text: 'Сенин салмагың аз',
+            );
+          } else if (result >= 18.5 && result <= 24.9) {
+            showMyDialog(
+              context: context,
+              result: result,
+              text: 'Сенин салмагың жакшы. Азаматсың',
+            );
+          } else if (result > 24.9) {
+            showMyDialog(
+              context: context,
+              result: result,
+              text: 'Сенин салмагың ашыкча. Спорт менен алектен',
+            );
+          } else {
+            showMyDialog(
+              context: context,
+              result: result,
+              text: 'Маалымат алууда каталар бар ',
+            );
+          }
+        },
       ),
     );
   }

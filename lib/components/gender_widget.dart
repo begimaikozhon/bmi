@@ -22,7 +22,7 @@ class GenderWidget extends StatelessWidget {
         Icon(
           icon,
           size: 90,
-          color: isFemale ? AppColors.white : AppColors.redColor,
+          color: isFemale ? AppColors.white : AppColors.greyColor,
         ),
         Text(
           text,
